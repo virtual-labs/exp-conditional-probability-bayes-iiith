@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Conditional Probability & Bayes’ Theorem – Interactive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    body { font-family: 'Poppins', sans-serif; }
+    .venn   { transition: fill .3s, stroke .3s; }
+    .grid-cell { transition: fill .3s; }
+    .tree-node { transition: opacity .3s; }
+    .tree-edge { transition: stroke .3s, stroke-width .3s; }
+    .highlight { stroke: #fbbf24; stroke-width: 3px; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+<main class="max-w-6xl mx-auto p-4 md:p-8 space-y-6">
+
+  <h1 class="text-3xl md:text-4xl font-bold text-indigo-700 text-center">
+    Conditional Probability &amp; Bayes’ Theorem
+  </h1>
+
+  <!-- Controls -->
+  <section class="bg-white rounded-xl shadow-lg p-4 flex flex-wrap gap-4 justify-center">
+    <button id="newScenario"
+            class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+      New Scenario
+    </button>
+    <button id="toggleReveal"
+            class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+      Reveal/Hide Probabilities
+    </button>
+    <span class="flex items-center gap-2 text-sm">
+      <label for="visSelect">View:</label>
+      <select id="visSelect" class="border rounded p-1">
+        <option value="venn">Venn</option>
+        <option value="grid">Grid</option>
+        <option value="tree">Tree</option>
+      </select>
+    </span>
+  </section>
+
+  <!-- Scenario description -->
+  <p id="scenario" class="text-center text-lg font-medium text-gray-700"></p>
+
+  <!-- Visualization -->
+  <section class="bg-white rounded-xl shadow-lg p-6 flex justify-center">
+    <!-- Venn -->
+    <svg id="venn" width="320" height="240" class="hidden"></svg>
+
+    <!-- Grid -->
+    <svg id="grid" width="320" height="320" class="hidden"></svg>
+
+    <!-- Tree -->
+    <svg id="tree" width="500" height="300" class="hidden"></svg>
+  </section>
+
+  <!-- Questions / feedback -->
+  <section class="bg-indigo-50 rounded-xl p-4 space-y-3">
+    <div id="question" class="text-center text-xl font-semibold"></div>
+    <div class="flex justify-center">
+      <input id="answerInput" type="number" step="0.01"
+             class="border border-indigo-300 rounded px-3 py-2 text-center"
+             placeholder="0.00">
+      <button id="submitBtn" class="ml-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+        Submit
+      </button>
+    </div>
+    <div id="feedback" class="text-center font-medium"></div>
+  </section>
+
+</main>
+
+<script>
+/******************************************************************
+ * CONFIGURATION / STATE
+ ******************************************************************/
+const TOTAL = 400;                       // Population size
+let state = {                            // mutated at each scenario
+  A: 0, B: 0, AnB: 0,                    // counts
+  view: 'venn',                          // current view type
+  reveal: false,                       // show/hide computed probs
+  question: {},                          // current question
+  scenario: ''                           // description string
+};
+
+/******************************************************************
+ * SVG HELPERS
+ ******************************************************************/
+function $(sel) { return document.querySelector(sel); }
+const vennSVG = $('#venn');
+const gridSVG = $('#grid');
+const treeSVG = $('#tree');
+
+function clearSVG(svg) {
+  while (svg.lastChild) svg.removeChild(svg.lastChild);
+}
+
+/******************************************************************
+ * SCENARIO GENERATION
+ ******************************************************************/
+function rand(m, M) { return Math.floor(Math.random()*(M-m+1))+m; }
+
+function generateScenario() {
+  const baseRate = rand(5,30)/100;                  // P(A) – e.g. disease prevalence
+  const sensitivity = rand(70,95)/100;           // P(B|A) – true positive
+  const falsePos     = rand(5,20)/100;            // P(B|¬A) – false positive
+
+  state.A   = Math.round(baseRate     * TOTAL);
+  state.AnB = Math.round(sensitivity  * state.A);
+  const notA = TOTAL - state.A;
+  const notAnB = Math.round(falsePos * notA);
+  state.B = state.AnB + notAnB;
+
+  state.scenario = `Medical testing: ${state.A} / ${TOTAL} people have a disease (event A). 
+                    A diagnostic test is ${(sensitivity*100).toFixed(0)}% sensitive and has a 
+                    ${(falsePos*100).toFixed(0)}% false-positive rate.`;
+
+  generateQuestion();
+  render();
+}
+
+/******************************************************************
+ * QUESTIONS
+ ******************************************************************/
+function generateQuestion() {
+  const types = [
+    { name: 'P(A)',                fn: () => state.A / TOTAL },
+    { name: 'P(B)',                fn: () => state.B / TOTAL },
+    { name: 'P(A|B)',              fn: () => state.AnB / state.B },
+    { name: 'P(B|A)',              fn: () => state.AnB / state.A }
+  ];
+  state.question = types[rand(0, types.length-1)];
+  $('#question').textContent = `Compute ${state.question.name}`;
+}
+
+/******************************************************************
+ * VENN DIAGRAM
+ ******************************************************************/
+function drawVenn() {
+  clearSVG(vennSVG);
+  const [r1,r2] = [65, 65];
+  const [cx1,cy1] = [110,120];
+  const [cx2,cy2] = [210,120];
+
+  // circles
+  const circ = (svg,x,y,r,cls) => {
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',r);
+    c.classList.add('venn',cls);
+    svg.appendChild(c);
+    return c;
+  };
+  const A = circ(vennSVG,cx1,cy1,r1,'fill-blue-400/50 stroke-blue-600');
+  const B = circ(vennSVG,cx2,cy2,r2,'fill-red-400/50 stroke-red-600');
+
+  // labels
+  const txt = (svg,x,y,t) => {
+    const el = document.createElementNS('http://www.w3.org/2000/svg','text');
+    el.setAttribute('x',x); el.setAttribute('y',y);
+    el.setAttribute('text-anchor','middle');
+    el.classList.add('text-sm','font-bold','fill-gray-700');
+    el.textContent = t;
+    svg.appendChild(el);
+  };
+  txt(vennSVG,cx1-40,cy1-75,'A');
+  txt(vennSVG,cx2+40,cy2-75,'B');
+
+  // counts
+  const overlap = intersectionArea(cx1,cy1,r1,cx2,cy2,r2);
+  const onlyA = state.A - state.AnB;
+  const onlyB = state.B - state.AnB;
+  const neither = TOTAL - state.A - state.B + state.AnB;
+
+  if (state.reveal) {
+    txt(vennSVG,cx1-40,cy1,onlyA);
+    txt(vennSVG,cx2+40,cy2,onlyB);
+    txt(vennSVG,(cx1+cx2)/2, cy1, state.AnB);
+    txt(vennSVG,160,200, neither);
+  }
+}
+
+function intersectionArea(x1,y1,r1,x2,y2,r2){
+  const d = Math.hypot(x2-x1,y2-y1);
+  if (d>=r1+r2) return 0;
+  if (d<=Math.abs(r1-r2)) return Math.PI*Math.min(r1,r2)**2;
+  const [R,r] = [Math.max(r1,r2),Math.min(r1,r2)];
+  const a = (r*r*Math.acos((d*d+r*r-R*R)/(2*d*r))) + (R*R*Math.acos((d*d+R*R-r*r)/(2*d*R))) - (0.5*Math.sqrt((-d+r+R)*(d+r-R)*(d-r+R)*(d+r+R)));
+  return a;
+}
+
+/******************************************************************
+ * GRID
+ ******************************************************************/
+function drawGrid() {
+  clearSVG(gridSVG);
+  const n = Math.sqrt(TOTAL);
+  const size = 16;
+  const offset = 10;
+  for (let i=0;i<n;i++){
+    for (let j=0;j<n;j++){
+      const idx = i*n+j;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x', offset+j*size);
+      rect.setAttribute('y', offset+i*size);
+      rect.setAttribute('width', size-1);
+      rect.setAttribute('height', size-1);
+      rect.classList.add('grid-cell');
+      // color coding
+      if (idx < state.A) {                 // inside A
+        rect.classList.add(idx < state.AnB ? 'fill-red-500' : 'fill-blue-500');
+      } else {                            // outside A
+        rect.classList.add(idx < state.A + (state.B - state.AnB) ? 'fill-red-500' : 'fill-gray-300');
+      }
+      gridSVG.appendChild(rect);
+    }
+  }
+  if (state.reveal){
+    const txt = (x,y,t) => {
+      const el = document.createElementNS('http://www.w3.org/2000/svg','text');
+      el.setAttribute('x',x); el.setAttribute('y',y);
+      el.setAttribute('text-anchor','middle');
+      el.classList.add('text-xs','fill-black');
+      el.textContent = t;
+      gridSVG.appendChild(el);
+    };
+    txt(180,10,'A');
+    txt(180,25,'B');
+    txt(180,40,`P(A)=${(state.A/TOTAL).toFixed(2)}`);
+    txt(180,55,`P(B)=${(state.B/TOTAL).toFixed(2)}`);
+    txt(180,70,`P(A|B)=${(state.AnB/state.B).toFixed(2)}`);
+  }
+}
+
+/******************************************************************
+ * TREE DIAGRAM
+ ******************************************************************/
+function drawTree() {
+  clearSVG(treeSVG);
+  const [w,h] = [500,300];
+
+  const pA = state.A/TOTAL;
+  const pNotA = 1-pA;
+  const pBgivenA = state.AnB/state.A;
+  const pNotBgivenA = 1-pBgivenA;
+  const pBgivenNotA = (state.B-state.AnB)/(TOTAL-state.A);
+  const pNotBgivenNotA = 1-pBgivenNotA;
+
+  const level1Y = 60;
+  const level2Y = 160;
+  const level3Y = 260;
+
+  // Level 1
+  drawNode(100, level1Y, 'A', pA);
+  drawNode(200, level1Y, '¬A', pNotA);
+
+  // Level 2 from A
+  drawLine(100, level1Y, 50, level2Y);
+  drawNode(50, level2Y, 'B', pBgivenA);
+  drawLine(100, level1Y, 150, level2Y);
+  drawNode(150, level2Y, '¬B', pNotBgivenA);
+
+  // Level 2 from ¬A
+  drawLine(200, level1Y, 250, level2Y);
+  drawNode(250, level2Y, 'B', pBgivenNotA);
+  drawLine(200, level1Y, 300, level2Y);
+  drawNode(300, level2Y, '¬B', pNotBgivenNotA);
+
+  if (state.reveal){
+    // joint probabilities
+    drawNode(50, level3Y, '', (pA*pBgivenA).toFixed(3));
+    drawNode(150, level3Y, '', (pA*pNotBgivenA).toFixed(3));
+    drawNode(250, level3Y, '', (pNotA*pBgivenNotA).toFixed(3));
+    drawNode(300, level3Y, '', (pNotA*pNotBgivenNotA).toFixed(3));
+  }
+}
+
+function drawNode(x,y,label,val){
+  const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+  const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',20);
+  c.classList.add('fill-indigo-200','stroke-indigo-600');
+  g.appendChild(c);
+  const t1 = document.createElementNS('http://www.w3.org/2000/svg','text');
+  t1.setAttribute('x',x); t1.setAttribute('y',y-5);
+  t1.setAttribute('text-anchor','middle');
+  t1.classList.add('text-sm','font-bold','fill-gray-800');
+  t1.textContent = label;
+  g.appendChild(t1);
+  const t2 = document.createElementNS('http://www.w3.org/2000/svg','text');
+  t2.setAttribute('x',x); t2.setAttribute('y',y+10);
+  t2.setAttribute('text-anchor','middle');
+  t2.classList.add('text-xs','fill-gray-600');
+  t2.textContent = state.reveal ? val : '';
+  g.appendChild(t2);
+  treeSVG.appendChild(g);
+}
+
+function drawLine(x1,y1,x2,y2){
+  const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+  l.setAttribute('x1',x1); l.setAttribute('y1',y1);
+  l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+  l.classList.add('stroke-gray-500','stroke-2');
+  treeSVG.appendChild(l);
+}
+
+/******************************************************************
+ * RENDERING & CONTROLS
+ ******************************************************************/
+function render() {
+  [vennSVG, gridSVG, treeSVG].forEach(s => s.classList.add('hidden'));
+  switch(state.view){
+    case 'venn':  vennSVG.classList.remove('hidden'); drawVenn(); break;
+    case 'grid':  gridSVG.classList.remove('hidden'); drawGrid(); break;
+    case 'tree':  treeSVG.classList.remove('hidden'); drawTree(); break;
+  }
+  $('#scenario').textContent = state.scenario;
+}
+
+// Events
+$('#newScenario').onclick = generateScenario;
+$('#toggleReveal').onclick = () => { state.reveal = !state.reveal; render(); };
+$('#visSelect').onchange = (e) => { state.view = e.target.value; render(); };
+$('#submitBtn').onclick = () => {
+  const user = parseFloat($('#answerInput').value);
+  const correct = state.question.fn();
+  const delta = Math.abs(user - correct);
+  const feedback = $('#feedback');
+  if (delta < 0.01){
+    feedback.textContent = `✅ Correct! ${state.question.name} = ${correct.toFixed(3)}`;
+    feedback.className = 'text-green-600';
+    setTimeout(generateScenario, 2000);
+  } else {
+    feedback.textContent = `❌ Incorrect. ${state.question.name} = ${correct.toFixed(3)}`;
+    feedback.className = 'text-red-600';
+  }
+};
+
+// initial
+generateScenario();
+</script>
+</body>
+</html>
