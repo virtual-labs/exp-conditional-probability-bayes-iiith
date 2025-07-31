@@ -1,0 +1,19 @@
+
+/home/runner/work/exp-conditional-probability-bayes-iiith/exp-conditional-probability-bayes-iiith/experiment/simulation/Bayes.js
+  397:15   warning  'startY' is assigned a value but never used          no-unused-vars
+  406:15   warning  'testNegative1X' is assigned a value but never used  no-unused-vars
+  407:15   warning  'testNegative2X' is assigned a value but never used  no-unused-vars
+  528:13   warning  'modalContent' is assigned a value but never used    no-unused-vars
+  617:78   warning  Unnecessary escape character: \"                     no-useless-escape
+  617:105  warning  Unnecessary escape character: \"                     no-useless-escape
+  651:10   warning  'checkAnswer' is defined but never used              no-unused-vars
+  655:10   warning  'newScenario' is defined but never used              no-unused-vars
+  659:10   warning  'showSolution' is defined but never used             no-unused-vars
+
+/home/runner/work/exp-conditional-probability-bayes-iiith/exp-conditional-probability-bayes-iiith/experiment/simulation/mobile-detection.js
+  393:7   warning  'mobileDetection' is assigned a value but never used  no-unused-vars
+  396:38  warning  'module' is not defined                               no-undef
+  397:3   warning  'module' is not defined                               no-undef
+
+✖ 12 problems (0 errors, 12 warnings)
+

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bayes' Theorem & Probability Trees - Discrete Mathematics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="mobile-detection.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <div class="max-w-7xl mx-auto px-4 pb-8 space-y-4">
+
+    <!-- Main Content Grid -->
+    <div class="grid lg:grid-cols-3 gap-4">
+      
+      <!-- Probability Tree Visualization (Left Side - Takes 2 columns) -->
+      <section class="lg:col-span-2 bg-white p-4 rounded-xl shadow-lg">
+        <div class="text-center mb-3">
+          <h2 id="scenarioTitle" class="text-xl font-semibold text-indigo-700">🏥 Medical Test</h2>
+          <p class="text-sm text-gray-600">Probability Tree Diagram</p>
+        </div>
+        <div class="flex justify-center">
+          <canvas id="bayesCanvas" class="border rounded-lg bg-white"></canvas>
+        </div>
+      </section>
+
+      <!-- Controls Section (Right Side) -->
+      <section class="bg-white p-4 rounded-xl shadow-lg">
+        <div class="space-y-4">
+          <!-- Question -->
+          <div class="text-center">
+            <h2 class="text-xl font-bold text-indigo-700 mb-2">Calculate Probability</h2>
+            <div class="bg-indigo-50 p-3 rounded-lg">
+              <div class="text-sm font-bold text-indigo-800 mb-1">
+                <span id="questionText">What's the probability?</span>
+              </div>
+            </div>
+          </div>
+          <!-- Answer Input -->
+          <div>
+            <h3 class="text-lg font-semibold text-center mb-2">Your Answer</h3>
+            <div class="space-y-3">
+              <input type="text" id="answerInput" class="w-full p-3 text-xl text-center border-2 rounded-lg focus:border-indigo-500 focus:outline-none" 
+                     placeholder="0.25 or 25%">
+              <button onclick="checkAnswer()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">
+                Submit Answer
+              </button>
+              <div id="feedback" class="hidden p-3 rounded-lg text-center font-medium text-sm"></div>
+            </div>
+          </div>
+          <!-- Streak Counter -->
+          <div class="border-t pt-4">
+            <div class="text-center">
+              <h3 class="text-lg font-semibold mb-2">Streak</h3>
+              <div class="mb-3">
+                <dv class="text-3xl font-bold text-purple-600" id="streakCount">0</div>
+                <div class="text-xs text-gray-600">Correct in a row</div>
+              </div>
+              <div class="space-y-2">
+                <button onclick="showSolution()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg text-sm">
+                  <span id="solutionBtnText">Show Solution</span>
+                </button>
+                <button onclick="newScenario()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg text-sm">
+                  New Scenario
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Theory Section (Colorful, Card-based) -->
+    <section id="helpSection" class="transition-opacity duration-500 mt-4">
+      <div class="max-w-5xl mx-auto">
+        <div class="flex flex-wrap justify-center gap-4">
+          <div class="card bg-gradient-to-br from-indigo-500 to-purple-500 text-white p-5 rounded-xl flex-1 min-w-[220px] max-w-xs shadow-lg">
+            <h4 class="font-semibold text-lg mb-2">Bayes' Theorem</h4>
+            <p class="text-sm">P(A|B) = P(B|A) × P(A) / P(B)<br>Updates probability when new evidence appears</p>
+          </div>
+          <div class="card bg-gradient-to-br from-pink-500 to-fuchsia-500 text-white p-5 rounded-xl flex-1 min-w-[220px] max-w-xs shadow-lg">
+            <h4 class="font-semibold text-lg mb-2">Conditional Probability</h4>
+            <p class="text-sm">P(A|B) means "probability of A given B"<br>Different from P(B|A)!</p>
+          </div>
+          <div class="card bg-gradient-to-br from-emerald-500 to-cyan-500 text-white p-5 rounded-xl flex-1 min-w-[220px] max-w-xs shadow-lg">
+            <h4 class="font-semibold text-lg mb-2">Tree Diagrams</h4>
+            <p class="text-sm">Follow branches and multiply probabilities<br>All paths sum to 100%</p>
+          </div>
+          <div class="card bg-gradient-to-br from-yellow-400 to-orange-400 text-white p-5 rounded-xl flex-1 min-w-[220px] max-w-xs shadow-lg">
+            <h4 class="font-semibold text-lg mb-2">Real Applications</h4>
+            <p class="text-sm">Medical tests, spam filters, weather prediction<br>Base rates matter!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="Bayes.js"></script>
+<script src="../assets/js/iframeResize.js"></script>
+        
+        </body>
+</html>
