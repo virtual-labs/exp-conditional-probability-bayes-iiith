@@ -1,0 +1,1 @@
+1. https://www.probabilitycourse.com/chapter1/1_4_3_bayes_rule.php
