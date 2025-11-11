@@ -75,7 +75,7 @@
         "a": "0.85",
         "b": "0.816",
         "c": "0.25",
-        "d": "0.739"
+        "d": "0.779"
       },
       "explanations": {
         "a": "This is the accuracy of predicting rain when it actually rains, but we need the reverse conditional probability.",
@@ -146,12 +146,12 @@
         "d": "5%"
       },
       "explanations": {
-        "a": "This doesn't account for the correct sequential probability calculations through both stages.",
-        "b": "Correct! Of defective items: 10% pass Stage 1 (0.05 × 0.10 = 0.005 or 0.5% of all products). Of these, 20% pass Stage 2 (0.005 × 0.20 = 0.001 or 0.1% of all products). Of non-defective items: 95% pass both stages easily (0.95 × 0.99 × 0.98 ≈ 0.9214 or 92.14%). Total passing both stages: 0.001 + 0.9214 = 0.9224. Percentage defective among passing products: 0.001 / 0.9224 ≈ 0.0011 or 0.11%.",
+        "a": "Correct! Of defective items: 10% pass Stage 1 (0.05 × 0.10 = 0.005 or 0.5% of all products). Of these, 20% pass Stage 2 (0.005 × 0.20 = 0.001 or 0.1% of all products are defective and pass both). Assuming good items pass both stages with very high probability (e.g., 99% pass Stage 1 and 98% pass Stage 2), we get 0.95 × 0.99 × 0.98 ≈ 0.9217 or 92.17% of all products are good and pass both. Total passing both stages: 0.001 + 0.9217 = 0.9227. Percentage defective among passing products: 0.001 / 0.9227 ≈ 0.00108 or about 0.1%.",
+        "b": "This underestimates the defective rate. The correct calculation shows approximately 0.1% of products passing both inspections are defective.",
         "c": "This overestimates the defective rate among products that pass both inspections.",
         "d": "This is the initial defective rate, not the rate among products passing both inspections."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "hard"
     }
   ]
