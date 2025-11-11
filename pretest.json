@@ -1,0 +1,158 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "What does P(A|B) represent in probability notation?",
+      "answers": {
+        "a": "The probability of A and B occurring together",
+        "b": "The probability of A occurring given that B has occurred",
+        "c": "The probability of A occurring before B",
+        "d": "The probability of A or B occurring"
+      },
+      "explanations": {
+        "a": "This represents joint probability P(A ∩ B), not conditional probability.",
+        "b": "Correct! P(A|B) is read as 'probability of A given B' and represents the likelihood of event A occurring when we know that event B has already occurred.",
+        "c": "Conditional probability does not refer to temporal order, but to the condition that one event has occurred.",
+        "d": "This represents the union of events P(A ∪ B), not conditional probability."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "In a probability tree diagram, how do you calculate the probability of reaching a specific leaf node?",
+      "answers": {
+        "a": "Add all the probabilities along the path from root to leaf",
+        "b": "Take the average of all probabilities along the path",
+        "c": "Multiply all the probabilities along the path from root to leaf",
+        "d": "Use only the final probability before the leaf node"
+      },
+      "explanations": {
+        "a": "Adding probabilities along a path would not give the correct joint probability and could exceed 1.0.",
+        "b": "Averaging probabilities is not the correct method for calculating joint probabilities in tree diagrams.",
+        "c": "Correct! To find the probability of a specific outcome (leaf node), you multiply all the conditional probabilities along the path from the root to that leaf. This gives you the joint probability.",
+        "d": "Using only the final probability ignores the prior probabilities and would not give the correct joint probability."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "If P(Disease) = 0.01 and P(Test Positive | Disease) = 0.95, what is P(Disease AND Test Positive)?",
+      "answers": {
+        "a": "0.96",
+        "b": "0.0095",
+        "c": "0.94",
+        "d": "0.01"
+      },
+      "explanations": {
+        "a": "This would be the result of adding the probabilities, which is incorrect for joint probability calculation.",
+        "b": "Correct! P(Disease AND Test Positive) = P(Disease) × P(Test Positive | Disease) = 0.01 × 0.95 = 0.0095 or 0.95%.",
+        "c": "This appears to be a subtraction, which is not the correct operation for joint probability.",
+        "d": "This ignores the conditional probability of testing positive given the disease."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "A medical test has a sensitivity of 90% (correctly identifies 90% of sick patients) and a specificity of 85% (correctly identifies 85% of healthy patients). If 2% of the population has the disease, what is the probability that a randomly selected person tests positive?",
+      "answers": {
+        "a": "0.167",
+        "b": "0.175",
+        "c": "0.018",
+        "d": "0.165"
+      },
+      "explanations": {
+        "a": "This calculation may have used incorrect values or formulas for the total probability.",
+        "b": "This result doesn't match the correct calculation using the law of total probability.",
+        "c": "This only accounts for true positives (sick people testing positive) but ignores false positives (healthy people testing positive).",
+        "d": "Correct! P(Test Positive) = P(Test Positive | Disease) × P(Disease) + P(Test Positive | No Disease) × P(No Disease) = 0.90 × 0.02 + 0.15 × 0.98 = 0.018 + 0.147 = 0.165 or 16.5%."
+      },
+      "correctAnswer": "d",
+      "difficulty": "medium"
+    },
+    {
+      "question": "Using the same medical test from the previous question (sensitivity 90%, specificity 85%, disease prevalence 2%), what is the probability that a person who tests positive actually has the disease?",
+      "answers": {
+        "a": "0.109",
+        "b": "0.90",
+        "c": "0.15",
+        "d": "0.02"
+      },
+      "explanations": {
+        "a": "Correct! Using Bayes' Theorem: P(Disease | Test Positive) = P(Test Positive | Disease) × P(Disease) / P(Test Positive) = (0.90 × 0.02) / 0.165 = 0.018 / 0.165 ≈ 0.109 or 10.9%. This low value illustrates the importance of base rates in medical testing.",
+        "b": "This is the sensitivity of the test, not the probability of having the disease given a positive test.",
+        "c": "This appears to be related to the false positive rate, but is not the answer to this Bayes' theorem question.",
+        "d": "This is the disease prevalence in the population, not the conditional probability we're seeking."
+      },
+      "correctAnswer": "a",
+      "difficulty": "medium"
+    },
+    {
+      "question": "In an email spam detection system, 40% of emails are spam. The spam filter correctly identifies 95% of spam emails and incorrectly flags 8% of legitimate emails as spam. If an email is flagged as spam, what is the probability it is actually spam?",
+      "answers": {
+        "a": "0.95",
+        "b": "0.885",
+        "c": "0.40",
+        "d": "0.792"
+      },
+      "explanations": {
+        "a": "This is the true positive rate (sensitivity) of the spam filter, not the probability that a flagged email is actually spam.",
+        "b": "Correct! First calculate P(Flagged as Spam) = P(Flagged | Spam) × P(Spam) + P(Flagged | Not Spam) × P(Not Spam) = 0.95 × 0.40 + 0.08 × 0.60 = 0.38 + 0.048 = 0.428. Then P(Spam | Flagged) = (0.95 × 0.40) / 0.428 = 0.38 / 0.428 ≈ 0.885 or 88.5%.",
+        "c": "This is the base rate of spam emails, not the conditional probability we need.",
+        "d": "This calculation does not follow the correct Bayes' theorem formula."
+      },
+      "correctAnswer": "b",
+      "difficulty": "medium"
+    },
+    {
+      "question": "A rare genetic condition affects 1 in 10,000 people. A genetic test for this condition has 99.9% sensitivity and 99.5% specificity. What is the probability that someone who tests positive actually has the condition?",
+      "answers": {
+        "a": "0.0196",
+        "b": "0.999",
+        "c": "0.0001",
+        "d": "0.995"
+      },
+      "explanations": {
+        "a": "Correct! This is a classic example of the base rate fallacy. P(Test Positive) = 0.999 × 0.0001 + 0.005 × 0.9999 = 0.0000999 + 0.0049995 = 0.0050994. P(Condition | Test Positive) = (0.999 × 0.0001) / 0.0050994 ≈ 0.0196 or about 1.96%. Despite the high accuracy of the test, the extremely low base rate means most positive tests are false positives.",
+        "b": "This is the sensitivity of the test, but due to the very low base rate, most positive results are false positives.",
+        "c": "This is the prevalence of the condition, not the probability of having it given a positive test.",
+        "d": "This is the specificity of the test, not the answer to our Bayes' theorem question."
+      },
+      "correctAnswer": "a",
+      "difficulty": "hard"
+    },
+    {
+      "question": "A company uses three machines (A, B, C) to produce items. Machine A produces 50% of items with 2% defective rate, Machine B produces 30% with 3% defective rate, and Machine C produces 20% with 5% defective rate. If a randomly selected item is defective, what is the probability it came from Machine B?",
+      "answers": {
+        "a": "0.30",
+        "b": "0.03",
+        "c": "0.310",
+        "d": "0.257"
+      },
+      "explanations": {
+        "a": "This is the proportion of items produced by Machine B, not the conditional probability we seek.",
+        "b": "This is the defective rate for Machine B, not the probability that a defective item came from Machine B.",
+        "c": "Correct! First find P(Defective) = 0.50 × 0.02 + 0.30 × 0.03 + 0.20 × 0.05 = 0.01 + 0.009 + 0.01 = 0.029. Then P(Machine B | Defective) = P(Defective | Machine B) × P(Machine B) / P(Defective) = (0.03 × 0.30) / 0.029 = 0.009 / 0.029 ≈ 0.310 or about 31.0%.",
+        "d": "This calculation appears to use incorrect values or an improper application of Bayes' theorem."
+      },
+      "correctAnswer": "c",
+      "difficulty": "hard"
+    },
+    {
+      "question": "In a clinical trial, a new diagnostic test is being evaluated. The test has 92% sensitivity and 88% specificity for a condition that affects 15% of the tested population. If 1000 people are tested, approximately how many people who test negative actually have the condition (false negatives)?",
+      "answers": {
+        "a": "12",
+        "b": "102",
+        "c": "88",
+        "d": "150"
+      },
+      "explanations": {
+        "a": "Correct! Out of 1000 people, 150 have the condition (15%). With 92% sensitivity, the test correctly identifies 92% of these 150 people, which is 138 people. Therefore, 150 - 138 = 12 people with the condition will test negative (false negatives).",
+        "b": "This appears to be calculating false positives rather than false negatives, or using incorrect percentages.",
+        "c": "This might be related to the specificity calculation but doesn't answer the question about false negatives.",
+        "d": "This is the total number of people with the condition, not the number of false negatives."
+      },
+      "correctAnswer": "a",
+      "difficulty": "hard"
+    }
+  ]
+}
