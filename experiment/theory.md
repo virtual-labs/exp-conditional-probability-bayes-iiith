@@ -11,9 +11,9 @@ Conditional probability is the probability of an event occurring **given** that 
 
 - **Notation**: `P(A|B)` is the probability of event A occurring given that B has occurred.
 - **Formula**:  
-  \[
+  $$
   P(A|B) = \frac{P(A \cap B)}{P(B)}
-  \]
+  $$
   
   This tells us how likely A is, *assuming* that B is known to have happened.
 
@@ -29,11 +29,11 @@ This is not the same as `P(B|A)` – which would be the probability that a perso
 
 ## Bayes' Theorem: Turning Probabilities Around
 
-Often, we know `P(B|A)`, but we really want to know `P(A|B)`. This is where Bayes’ Theorem comes in:
+Often, we know `P(B|A)`, but we really want to know `P(A|B)`. This is where Bayes' Theorem comes in:
 
-\[
+$$
 P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
-\]
+$$
 
 It combines:
 - `P(B|A)`: How likely is the evidence, given the cause?
