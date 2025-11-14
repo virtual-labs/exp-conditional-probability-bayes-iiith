@@ -1,1 +1,4 @@
-### Aim of the experiment
+- Understand **conditional probability** and how it differs from joint and marginal probability through visual, interactive setups.
+- Learn and apply **Bayes’ Theorem** to real-world scenarios such as medical testing, email spam filtering, and quality control.
+- Interpret and compute probabilities using **visual tools** such as Venn diagrams, population grids, and tree diagrams.
+- Build intuition around **P(A|B)** vs **P(B|A)** by receiving immediate feedback on common mistakes and misconceptions.

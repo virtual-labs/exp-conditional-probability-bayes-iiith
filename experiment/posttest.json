@@ -2,38 +2,157 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "In probability notation, what is the difference between P(A|B) and P(B|A)?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "There is no difference; they represent the same probability",
+        "b": "P(A|B) is the probability of A given B, while P(B|A) is the probability of B given A",
+        "c": "P(A|B) is always greater than P(B|A)",
+        "d": "P(A|B) represents joint probability while P(B|A) represents conditional probability"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "These are different conditional probabilities and generally have different values unless A and B are independent and equally likely.",
+        "b": "Correct! P(A|B) means 'probability of A given that B has occurred' while P(B|A) means 'probability of B given that A has occurred'. These are typically different values and this distinction is crucial in Bayes' theorem.",
+        "c": "Neither probability is inherently greater than the other; their relative values depend on the specific events and their relationships.",
+        "d": "Both P(A|B) and P(B|A) are conditional probabilities, not joint probabilities."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "In a probability tree diagram, if all leaf nodes represent mutually exclusive outcomes, what should be the sum of all leaf node probabilities?",
+      "answers": {
+        "a": "It depends on the number of branches",
+        "b": "Always less than 1.0",
+        "c": "Exactly 1.0",
+        "d": "It varies based on the conditional probabilities"
+      },
+      "explanations": {
+        "a": "The sum of leaf node probabilities is always 1.0 regardless of the number of branches, as they represent all possible mutually exclusive outcomes.",
+        "b": "The sum must equal 1.0 since the leaf nodes represent all possible outcomes in the sample space.",
+        "c": "Correct! Since the leaf nodes represent all possible mutually exclusive outcomes of the probability experiment, their probabilities must sum to 1.0. This is a fundamental property of probability trees.",
+        "d": "While individual leaf probabilities depend on conditional probabilities, their sum is always 1.0 for a complete tree diagram."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "If P(Rain) = 0.3 and P(Cloudy | Rain) = 0.8, what is P(Rain AND Cloudy)?",
+      "answers": {
+        "a": "0.24",
+        "b": "1.1",
+        "c": "0.5",
+        "d": "0.8"
+      },
+      "explanations": {
+        "a": "Correct! P(Rain AND Cloudy) = P(Rain) × P(Cloudy | Rain) = 0.3 × 0.8 = 0.24 or 24%. This represents the joint probability of both events occurring.",
+        "b": "This would result from adding the probabilities, which is incorrect and impossible since probabilities cannot exceed 1.0.",
+        "c": "This doesn't follow any correct probability calculation rule for the given information.",
+        "d": "This is just the conditional probability P(Cloudy | Rain), not the joint probability we're calculating."
       },
       "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "A security system has a 95% detection rate for intruders and a 3% false alarm rate for normal situations. If intruders attempt break-ins 1% of the time, what is the probability that an alarm indicates an actual intruder?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "0.95",
+        "b": "0.244",
+        "c": "0.01",
+        "d": "0.97"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "This is the detection rate, but due to the low base rate of actual break-ins, most alarms are false alarms.",
+        "b": "Correct! First calculate P(Alarm) = P(Alarm | Intruder) × P(Intruder) + P(Alarm | No Intruder) × P(No Intruder) = 0.95 × 0.01 + 0.03 × 0.99 = 0.0095 + 0.0297 = 0.0392. Then P(Intruder | Alarm) = (0.95 × 0.01) / 0.0392 ≈ 0.244 or 24.4%.",
+        "c": "This is the base rate of intruders, not the probability of an intruder given an alarm.",
+        "d": "This appears to be 1 minus the false alarm rate, but that's not the correct calculation for this Bayes' theorem problem."
+      },
+      "correctAnswer": "b",
+      "difficulty": "medium"
+    },
+    {
+      "question": "A weather prediction model correctly predicts rain 85% of the time when it will rain, and correctly predicts no rain 92% of the time when it won't rain. If it rains 25% of the days in a region, what is the probability that it will actually rain when the model predicts rain?",
+      "answers": {
+        "a": "0.85",
+        "b": "0.816",
+        "c": "0.25",
+        "d": "0.779"
+      },
+      "explanations": {
+        "a": "This is the accuracy of predicting rain when it actually rains, but we need the reverse conditional probability.",
+        "b": "This calculation doesn't match the correct Bayes' theorem computation for this scenario.",
+        "c": "This is the base rate of rainy days, not the conditional probability we're seeking.",
+        "d": "Correct! P(Predicts Rain) = P(Predicts Rain | Rain) × P(Rain) + P(Predicts Rain | No Rain) × P(No Rain) = 0.85 × 0.25 + 0.08 × 0.75 = 0.2125 + 0.06 = 0.2725. P(Rain | Predicts Rain) = (0.85 × 0.25) / 0.2725 ≈ 0.779 or about 77.9%."
+      },
+      "correctAnswer": "d",
+      "difficulty": "medium"
+    },
+    {
+      "question": "An online fraud detection system flags 6% of legitimate transactions and correctly identifies 94% of fraudulent transactions. If 0.5% of all transactions are fraudulent, what percentage of flagged transactions are actually fraudulent?",
+      "answers": {
+        "a": "7.3%",
+        "b": "94%",
+        "c": "0.5%",
+        "d": "6%"
+      },
+      "explanations": {
+        "a": "Correct! P(Flagged) = P(Flagged | Fraud) × P(Fraud) + P(Flagged | Legitimate) × P(Legitimate) = 0.94 × 0.005 + 0.06 × 0.995 = 0.0047 + 0.0597 = 0.0644. P(Fraud | Flagged) = (0.94 × 0.005) / 0.0644 ≈ 0.073 or 7.3%. This shows that even with high accuracy, most flagged transactions are false positives due to the low fraud rate.",
+        "b": "This is the true positive rate, but most flagged transactions are actually false positives due to the low base rate of fraud.",
+        "c": "This is the overall fraud rate, not the conditional probability of fraud given a flag.",
+        "d": "This is the false positive rate for legitimate transactions, not the answer to our question."
+      },
+      "correctAnswer": "a",
+      "difficulty": "medium"
+    },
+    {
+      "question": "A pharmaceutical company tests a new drug using three different labs. Lab A conducts 40% of tests with 1% error rate, Lab B conducts 35% with 2% error rate, and Lab C conducts 25% with 4% error rate. If a test result contains an error, what is the probability it came from Lab C?",
+      "answers": {
+        "a": "0.25",
+        "b": "0.04",
+        "c": "0.476",
+        "d": "0.40"
+      },
+      "explanations": {
+        "a": "This is the proportion of tests conducted by Lab C, not the conditional probability we need.",
+        "b": "This is Lab C's error rate, not the probability that an error came from Lab C.",
+        "c": "Correct! First calculate P(Error) = 0.40 × 0.01 + 0.35 × 0.02 + 0.25 × 0.04 = 0.004 + 0.007 + 0.01 = 0.021. Then P(Lab C | Error) = P(Error | Lab C) × P(Lab C) / P(Error) = (0.04 × 0.25) / 0.021 = 0.01 / 0.021 ≈ 0.476 or 47.6%.",
+        "d": "This is the proportion of tests from Lab A, which is not relevant to the question about Lab C."
       },
       "correctAnswer": "c",
-      "difficulty": "beginner"
+      "difficulty": "hard"
+    },
+    {
+      "question": "A diagnostic imaging technique has 88% sensitivity and 94% specificity for detecting a brain tumor. In a high-risk population where 8% have tumors, if 500 people are scanned and test positive, approximately how many actually have tumors?",
+      "answers": {
+        "a": "40",
+        "b": "35",
+        "c": "28",
+        "d": "53"
+      },
+      "explanations": {
+        "a": "This represents all people with tumors in the population, not those who test positive and have tumors.",
+        "b": "This might be the number of true positives, but we need to account for the total number who test positive first.",
+        "c": "This calculation doesn't properly account for the Bayes' theorem relationship in this scenario.",
+        "d": "Correct! First find how many test positive: P(Test Positive) = 0.88 × 0.08 + 0.06 × 0.92 = 0.0704 + 0.0552 = 0.1256. So 500 × 0.1256 ≈ 63 people test positive. P(Tumor | Test Positive) = (0.88 × 0.08) / 0.1256 ≈ 0.846. Therefore, 63 × 0.846 ≈ 53 people who test positive actually have tumors."
+      },
+      "correctAnswer": "d",
+      "difficulty": "hard"
+    },
+    {
+      "question": "In a factory quality control system, products pass through two inspection stages. Stage 1 catches 90% of defective items, and Stage 2 catches 80% of defective items that passed Stage 1. If 5% of products are initially defective, what percentage of products that pass both inspections are actually defective?",
+      "answers": {
+        "a": "0.1%",
+        "b": "0.053%",
+        "c": "1%",
+        "d": "5%"
+      },
+      "explanations": {
+        "a": "Correct! Of defective items: 10% pass Stage 1 (0.05 × 0.10 = 0.005 or 0.5% of all products). Of these, 20% pass Stage 2 (0.005 × 0.20 = 0.001 or 0.1% of all products are defective and pass both). Assuming good items pass both stages with very high probability (e.g., 99% pass Stage 1 and 98% pass Stage 2), we get 0.95 × 0.99 × 0.98 ≈ 0.9217 or 92.17% of all products are good and pass both. Total passing both stages: 0.001 + 0.9217 = 0.9227. Percentage defective among passing products: 0.001 / 0.9227 ≈ 0.00108 or about 0.1%.",
+        "b": "This underestimates the defective rate. The correct calculation shows approximately 0.1% of products passing both inspections are defective.",
+        "c": "This overestimates the defective rate among products that pass both inspections.",
+        "d": "This is the initial defective rate, not the rate among products passing both inspections."
+      },
+      "correctAnswer": "a",
+      "difficulty": "hard"
     }
   ]
 }
